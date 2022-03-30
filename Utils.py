@@ -4,14 +4,14 @@ import math
 
 
 def Encode_CASSI(x, Mask):
-    y = tf.multiply(x, Mask)
-    y = tf.reduce_sum(y, axis=3)
+    y = tf.multiply(x, Mask)                    # 使用掩膜进行编码（把 x 和掩膜对应位置相乘）
+    y = tf.reduce_sum(y, axis=3)                # 将 channel 维度加和
     return y
 
 def Init_CASSI(y, Mask, channel):
-    y1 = tf.expand_dims(y, axis=3)
-    y2 = tf.tile(y1, [1, 1, 1, channel])
-    x0 = tf.multiply(y2, Mask)
+    y1 = tf.expand_dims(y, axis=3)              # 升维，使每个 y 多一个 channel的维度
+    y2 = tf.tile(y1, [1, 1, 1, channel])        # 拓展数据，根据channel维size复制出size个channel的数量
+    x0 = tf.multiply(y2, Mask)                  # 再次使用掩膜进行编码（把 y2 和掩膜对应位置相乘）
     return x0
 
 def Cal_mse(im1, im2):
